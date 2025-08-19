@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Birthday Surprise 🎂</title>
+  <style>
+    @import url('https://fonts.cdnfonts.com/css/comic-sans-ms');
+    body {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #c084fc, #a5b4fc, #fbcfe8);
+      background-size: 400% 400%;
+      animation: gradientShift 12s ease infinite;
+      font-family: "Comic Sans MS", cursive, sans-serif;
+      overflow: hidden;
+      color: #4B0082;
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin: 1rem 0;
+      text-align: center;
+      z-index: 10;
+      position: relative;
+      white-space: pre-line;
+    }
+    .cake {
+      position: relative;
+      margin-top: 6rem;
+      width: 260px;
+      height: 220px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 5;
+      
+      transition: transform 0.5s ease;
+    }
+    .cake:hover {
+      transform: scale(1.05);
+    }
+    .layer {
+      position: absolute;
+      width: 260px;
+      height: 100px;
+      background: #fde68a;
+      border-radius: 20px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+      left: 0;
+    }
+    .layer.top {
+      top: 20px;
+      width: 200px;
+      left: 30px;
+      height: 80px;
+      background: #fcd34d;
+    }
+    .frosting {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 20px;
+      background: #f472b6;
+      border-radius: 20px 20px 0 0;
+    }
+    .candle-number {
+      position: absolute;
+      top: -70px;
+      font-size: 3.5rem;
+      font-weight: bold;
+      color: #db2777;
+      text-shadow: 2px 2px #00000055;
+    }
+    .candle-2 { left: 80px; }
+    .candle-1 { left: 140px; }
+    .flame {
+      position: absolute;
+      top: -30px;
+      width: 20px;
+      height: 30px;
+      background: radial-gradient(circle, #ffeb3b 40%, #ff9800 70%, transparent 80%);
+      border-radius: 50%;
+      animation: flicker 0.3s infinite alternate;
+      filter: blur(1px);
+      opacity: 0.9;
+    }
+    @keyframes flicker {
+      from { transform: scale(1); opacity: 1; }
+      to { transform: scale(1.2); opacity: 0.7; }
+    }
+    p {
+      margin: 1rem;
+      font-size: 1.2rem;
+      font-weight: 500;
+      z-index: 10;
+      position: relative;
+      white-space: pre-line;
+    }
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 20px;
+      top: -20px;
+      opacity: 0.9;
+      animation: fall linear forwards;
+      z-index: 1;
+    }
+    @keyframes fall {
+      to { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+    }
+    .shooting-star {
+      position: fixed;
+      top: -20px;
+      width: 3px;
+      height: 80px;
+      background: linear-gradient(-45deg, white, transparent);
+      opacity: 0.8;
+      transform: rotate(45deg);
+      animation: shoot 1.5s ease-out forwards;
+      z-index: 1;
+    }
+    @keyframes shoot {
+      0% {
+        transform: translateX(0) translateY(0) rotate(45deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateX(-500px) translateY(500px) rotate(45deg);
+        opacity: 0;
+      }
+    }
+    .image-container {
+      margin-top: 2rem;
+      text-align: center;
+      z-index: 5;
+      position: relative;
+      opacity: 0;
+      display: none;
+      transition: opacity 2s ease-in-out;
+    }
+    .image-container.show {
+      opacity: 1;
+      display: block;
+    }
+    .image-container img {
+      max-width: 877px;
+      width: 90%;
+      height: auto;
+      border-radius: 20px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+      animation: growPhoto 3s ease-out forwards;
+    }
+    @keyframes growPhoto {
+      from { transform: scale(0.6); }
+      to { transform: scale(1); }
+    }
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: rgba(255,0,0,0.6);
+      transform: rotate(45deg);
+      animation: floatHeart 6s ease-in-out forwards;
+      z-index: 2;
+      opacity: 0.9;
+    }
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(255,0,0,0.6);
+    }
+    .heart::before { top: -10px; left: 0; }
+    .heart::after { left: -10px; top: 0; }
+    @keyframes floatHeart {
+      0% { transform: translateY(100vh) rotate(45deg) scale(0.8); opacity: 0; }
+      20% { opacity: 1; }
+      50% { transform: translateY(50vh) rotate(45deg) scale(1); opacity: 0.8; }
+      100% { transform: translateY(-200px) rotate(45deg) scale(1.2); opacity: 0; }
+    }
+    #birthday-splash {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      z-index: 9999;
+      animation: splashFadeOut 5s ease forwards;
+      animation-delay: 2s;
+    }
+    #birthday-splash h1 {
+      font-size: 8rem;
+      color: #ff1493;
+      text-align: center;
+      animation: popIn 1s ease;
+    }
+    @keyframes popIn {
+      0% { transform: scale(0); opacity: 0; }
+      60% { transform: scale(1.3); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    @keyframes splashFadeOut {
+      0% { opacity: 1; }
+      100% { opacity: 0; visibility: hidden; }
+    }
+    #title {
+      opacity: 0;
+      transition: opacity 2s ease-in;
+    }
+    #title.show { opacity: 1; }
+  
+    .angel-container {
+      margin-top: 2rem;
+      text-align: center;
+      z-index: 5;
+      position: relative;
+      opacity: 0;
+      display: none;
+      transition: opacity 3s ease-in-out;
+    }
+    .angel-container.show {
+      opacity: 1;
+      display: block;
+    }
+    .angel-container img {
+      max-width: 877px;
+      width: 90%;
+      height: auto;
+      border-radius: 20px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+
+
+    .angel-container.hide {
+      opacity: 0 !important;
+      transition: opacity 1.5s ease-in-out;
+    }
+
+</style>
+</head>
+<body>
+  <div id="birthday-splash"><h1>🎉 Happy Birthday Ronii 🎉</h1></div>
+  <h1 id="title">🎉 🎂✨ Make a wish Ronii 🎉💫!! 🎉</h1>
+
+  
+  <div class="angel-container" id="angelContainer">
+    <img src="angel.jpg" alt="Angel Pic" />
+  </div>
+
+<div class="image-container" id="imageContainer">
+    <img src="image.jpg" alt="Special Pic" />
+  </div>
+
+  <div class="cake" id="cake" style="display:none;">
+    <div class="layer bottom"><div class="frosting"></div></div>
+    <div class="layer top"><div class="frosting"></div></div>
+    <div class="candle-number candle-2">2<div class="flame"></div></div>
+    <div class="candle-number candle-1">1<div class="flame"></div></div>
+  </div>
+
+  <p id="message"></p>
+
+  <audio id="whoosh" src="https://www.fesliyanstudios.com/play-mp3/387"></audio>
+
+  <script>
+    const cake = document.getElementById("cake");
+    const message = document.getElementById("message");
+    const title = document.getElementById("title");
+    const imageContainer = document.getElementById("imageContainer");
+    const whoosh = document.getElementById("whoosh");
+    let step = 0;
+    let angelTimeout = null;
+
+    function blowCandles() {
+      if (angelTimeout) { clearTimeout(angelTimeout); angelTimeout = null; }
+      const angel = document.getElementById("angelContainer");
+      if (angel) { angel.classList.remove("show"); angel.classList.add("hide"); setTimeout(()=>angel.style.display="none",1500); }
+      document.querySelectorAll(".flame").forEach(f => f.style.display = "none");
+      title.textContent = "✨ Make a Wish ✨";
+      message.textContent = "";
+      whoosh.currentTime = 0;
+      whoosh.play();
+      launchConfetti();
+      launchShootingStars(); // shooting stars effect
+      setTimeout(() => {
+        message.textContent = "Press Enter to continue...";
+      }, 3000);
+    }
+    cake.addEventListener("click", blowCandles);
+
+    async function setupMic() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const source = audioCtx.createMediaStreamSource(stream);
+        const analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 256;
+        source.connect(analyser);
+        const dataArray = new Uint8Array(analyser.frequencyBinCount);
+        function detectBlow() {
+          analyser.getByteFrequencyData(dataArray);
+          let avg = dataArray.reduce((a, b) => a + b, 0) / dataArray.length;
+          if (avg > 40) { blowCandles(); }
+          requestAnimationFrame(detectBlow);
+        }
+        detectBlow();
+      } catch (err) {
+        console.warn("Mic not available, fallback to tap");
+      }
+    }
+
+    function launchConfetti() {
+      for (let i = 0; i < 80; i++) {
+        const c = document.createElement("div");
+        c.className = "confetti";
+        c.style.left = Math.random() * window.innerWidth + "px";
+        c.style.backgroundColor = `hsl(${Math.random() * 360},100%,50%)`;
+        c.style.animationDuration = (Math.random() * 3 + 2) + "s";
+        document.body.appendChild(c);
+        setTimeout(() => c.remove(), 5000);
+      }
+    }
+
+    function launchShootingStars() {
+      for (let i = 0; i < 5; i++) {
+        setTimeout(() => {
+          const star = document.createElement("div");
+          star.className = "shooting-star";
+          star.style.left = Math.random() * window.innerWidth + "px";
+          document.body.appendChild(star);
+          setTimeout(() => star.remove(), 2000);
+        }, i * 500);
+      }
+    }
+
+    function launchHearts() {
+      for (let i = 0; i < 20; i++) {
+        const h = document.createElement("div");
+        h.className = "heart";
+        h.style.left = Math.random() * window.innerWidth + "px";
+        h.style.animationDelay = (Math.random() * 2) + "s";
+        document.body.appendChild(h);
+        setTimeout(() => h.remove(), 8000);
+      }
+    }
+
+    document.addEventListener("keydown", e => {
+      if (e.key === "Enter") {
+        step++;
+        if (step === 1) {
+          if (angelTimeout) { clearTimeout(angelTimeout); angelTimeout = null; }
+          const angel = document.getElementById("angelContainer");
+          if (angel) { angel.classList.remove("show"); angel.classList.add("hide"); setTimeout(()=>angel.style.display="none",1500); }
+          title.textContent = "🎂 Blow the Candles!";
+          message.textContent = "Blow into your mic or tap the cake!";
+          cake.style.display = "block";
+          setupMic();
+        } else if (step === 2) {
+  title.textContent = "I LOVE YOU ❤️";
+  message.textContent = "that's all roni!! wishin u hbd once again BYEII";
+  cake.style.display = "none";
+  imageContainer.classList.add("show");
+  launchHearts();
+}
+      }
+    });
+
+    
+window.addEventListener("load", () => {
+  const splash = document.getElementById("birthday-splash");
+  if (splash) {
+    setTimeout(() => {
+      splash.remove();
+      title.textContent = "✨ Make a Wish ✨";
+      title.classList.add("show");
+
+      // Show angel pic 5s after Make a Wish
+      angelTimeout = setTimeout(() => {
+        const angel = document.getElementById("angelContainer");
+        if (angel) angel.classList.add("show");
+      }, 5000);
+    }, 5000);
+  }
+});
+  </script>
+</body>
+</html>
